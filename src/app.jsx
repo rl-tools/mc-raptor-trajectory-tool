@@ -138,6 +138,20 @@ function LissajousTuner() {
     ramp_duration: 3.0,
   });
 
+  const [copied, setCopied] = useState(false);
+
+  // Generate Mavlink shell command
+  const mavlinkCommand = useMemo(() => {
+    return `mc_raptor intref lissajous ${params.A} ${params.B} ${params.C} ${params.a} ${params.b} ${params.c} ${params.duration} ${params.ramp_duration}`;
+  }, [params]);
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(mavlinkCommand).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
   // Dynamic amplitude slider max (shared between A and B, as requested).
   const [ampMax, setAmpMax] = useState(PARAM_SLIDERS.A.max);
 
@@ -263,8 +277,6 @@ function LissajousTuner() {
 
   return (
     <div className="container">
-      <h1 className="title">Lissajous XY Trajectory Tuner</h1>
-
       {/* Time slider */}
       <div className="card mb-6">
         <div className="row">
@@ -434,9 +446,20 @@ function LissajousTuner() {
         </div>
       </div>
 
-      <footer className="footer">
-        Lissajous Trajectory Tuner • Static GitHub Pages App
-      </footer>
+      {/* Mavlink command output */}
+      <div className="card mt-6">
+        <div className="section-label">Mavlink Shell Command</div>
+        <div className="command-row">
+          <code className="command-output">{mavlinkCommand}</code>
+          <button
+            onClick={copyToClipboard}
+            className="copy-button"
+            title="Copy to clipboard"
+          >
+            {copied ? '✓ Copied' : 'Copy'}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
