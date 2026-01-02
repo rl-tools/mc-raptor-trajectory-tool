@@ -4,15 +4,19 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "bundle": "./bundle.sh"
+    "bundle": "./bundle.sh",
+    "dev": "cp src/styles.css lib/styles.css && npx esbuild src/app.jsx --bundle --format=esm --outfile=lib/app.js --watch=forever & npx live-server --port=3000 --watch=lib,src"
   },
   "devDependencies": {
-    "esbuild": "^0.24.0"
+    "esbuild": "^0.24.0",
+    "live-server": "^1.2.2"
   },
   "dependencies": {
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "recharts": "^2.12.7"
+    "recharts": "^2.12.7",
+    "three": "^0.182.0"
   }
 }
-
